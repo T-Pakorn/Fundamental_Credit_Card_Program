@@ -2,18 +2,14 @@ package creditcardfx;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.UnsupportedEncodingException;
 
 public class CreditCard {
 
@@ -25,6 +21,8 @@ public class CreditCard {
     private LocalDate expiryDate;
     private String type;
     private String tier;
+    private String moneyBoundary;
+    private String state;
 
     public double getPaid() {
         return paid;
@@ -41,9 +39,7 @@ public class CreditCard {
     public void setBalance(double balance) {
         this.balance = balance;
     }
-    private String moneyBoundary;
-    private String state;
-    
+
     private double paid = 0, balance;
 
     public CreditCard() {
@@ -76,6 +72,7 @@ public class CreditCard {
         this.state = state;
     }
 
+    
     public String getSerial() {
         return serial;
     }
@@ -95,34 +92,39 @@ public class CreditCard {
             file.createNewFile();
 
         } else {
+            System.out.println(file.length());
+            if (file.length() == 0) {
+                randomStringNum = RandomStringNumber.getAlphaNumericString(16);
+            } else {
 
-            try (BufferedReader brCheck = new BufferedReader(new FileReader(file))) {
+                try (BufferedReader brCheck = new BufferedReader(new FileReader(file))) {
 
-                String line;
+                    String line;
 
-                do {
-                    brCheck.mark(1);
-                    System.out.println("Start Checking.");
-                    while ((line = brCheck.readLine()) != null) {
+                    do {
+                        brCheck.mark(1);
+                        System.out.println("Start Checking.");
+                        while ((line = brCheck.readLine()) != null) {
 
-                        String[] arr = line.split("#");
-                        System.out.println(arr[0]);
-                        if (randomStringNum.equals(arr[0])) {
-                            randomStringNum = RandomStringNumber.getAlphaNumericString(16);
-                            checkRandomPass = false;
-                            System.out.println("Error : Detect Same Card Number , Try To Random New Card Number.");
+                            String[] arr = line.split("#");
+                            System.out.println(arr[0]);
+                            if (randomStringNum.equals(arr[0])) {
+                                randomStringNum = RandomStringNumber.getAlphaNumericString(16);
+                                checkRandomPass = false;
+                                System.out.println("Error : Detect Same Card Number , Try To Random New Card Number.");
 
-                            brCheck.reset();
-                            break;
-                        } else {
-                            checkRandomPass = true;
+                                brCheck.reset();
+                                break;
+                            } else {
+                                checkRandomPass = true;
+                            }
                         }
-                    }
 
-                } while (checkRandomPass == false);
+                    } while (checkRandomPass == false);
+
+                }
 
             }
-
         }
         System.out.println("Done Checking.");
         this.serial = randomStringNum;
@@ -219,21 +221,21 @@ public class CreditCard {
             System.out.println(c);
         }
     }
-    
+
     public static int findIndex(String search) {
         List<CreditCard> cards = CSVReaderInJava.readCardsFromCSV(Utils.locationOfOriginalFile);
         int targetIndex = 0;
-        int count=0;
-        
+        int count = 0;
+
         for (CreditCard c : cards) {
-            
+
             if (c.getSerial() != null && c.getSerial().contains(search)) {
                 targetIndex = count;
                 break;
             }
-       
+
             count++;
-            
+
         }
         return targetIndex;
     }
@@ -311,9 +313,13 @@ public class CreditCard {
         bufferCard.setMoneyBoundary(moneyBoundString);
         bufferCard.setState(cardStatusString);
 
+        System.out.println("LENGTH FILE : " + file.length());
         try {
-
-            writer = new FileWriter(file, true);
+            if (file.length() == 5 || file.length() == 2) {
+                writer = new FileWriter(file);
+            } else {
+                writer = new FileWriter(file, true);
+            }
             writer.write(bufferCard.getSerial() + "#" + bufferCard.getCcv() + "#" + bufferCard.getName() + "#"
                     + bufferCard.getSurname() + "#" + bufferCard.getIssueDate()
                     + "#" + bufferCard.getExpiryDate() + "#" + bufferCard.getType() + "#"
@@ -355,6 +361,7 @@ public class CreditCard {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -362,12 +369,4 @@ public class CreditCard {
         return "CreditCard { " + "Serial= " + serial + ", CCV= " + ccv + ", Name= " + name + ", Surname= " + surname + ", IssueDate= " + issueDate + ", ExpiryDate= " + expiryDate + ", Type= " + type + ", Tier= " + tier + ", MoneyBoundary= " + moneyBoundary + ", State= " + state + " }";
     }
 
-//    public static void main(String[] args) throws IOException {
-//
-////        readAndPrintAll();
-////        System.out.println("-----------------------------------START DELETE-----------------------------------");
-////        DeleteRow.deleteAndWriteBackToCSV(1);
-////
-//
-//    }
 }

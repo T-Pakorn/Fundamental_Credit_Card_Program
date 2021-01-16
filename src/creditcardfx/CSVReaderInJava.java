@@ -1,6 +1,8 @@
 package creditcardfx;
 
+import java.awt.desktop.FilesEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,7 +26,14 @@ public class CSVReaderInJava {
     static List<CreditCard> readCardsFromCSV(String fileName) {
         List<CreditCard> cards = new ArrayList<>();
         Path pathToFile = Paths.get(fileName);
-
+       
+        File testEmpty = new File(Utils.locationOfOriginalFile);
+         System.out.println("LENGTH WHEN READ JA : " + testEmpty.length() );
+        if(testEmpty.length()==2||testEmpty.length()==5){
+ 
+            cards.add(new CreditCard());
+        }
+        else{
         // create an instance of BufferedReader
         // using try with resource, Java 7 feature to close resources
         try (BufferedReader br = Files.newBufferedReader(pathToFile,
@@ -55,7 +64,7 @@ public class CSVReaderInJava {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-
+        }
         return cards;
     }
 

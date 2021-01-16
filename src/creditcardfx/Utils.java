@@ -4,8 +4,8 @@ import java.text.DecimalFormat;
 
 public class Utils {
 
-    static String locationOfOriginalFile = "C:\\Users\\Tree\\Desktop\\creditcardfx\\listOriginal.csv";
-    static String locationOfTemporaryFile = "C:\\Users\\Tree\\Desktop\\creditcardfx\\tempWaitToDelete.csv";
+    static String locationOfOriginalFile = "C:\\Users\\Tree\\Desktop\\CreditCard\\listOriginal.csv";
+    static String locationOfTemporaryFile = "C:\\Users\\Tree\\Desktop\\CreditCard\\tempWaitToDelete.csv";
 
     public static String capitalizedFirstChar(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();

@@ -35,8 +35,6 @@ public class ListToCSVWriter {
             newFile.createNewFile();
         }
         
-          
-        System.out.println("Deletion successful."); 
 
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newFile), "UTF-8"))) {
             for (CreditCard cards : temp) {

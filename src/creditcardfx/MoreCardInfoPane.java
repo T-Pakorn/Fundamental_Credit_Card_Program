@@ -7,27 +7,39 @@ package creditcardfx;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 /**
  *
  * @author user
  */
-public class MoreCardInfoPane extends Pane{
+public class MoreCardInfoPane extends Pane {
+
     private CreditCard creditCard = new CreditCard();
     private ListView nameList = new ListView(), valueList = new ListView();
-    private Label listName = new Label("Information of card holder");
+    private Label listName = new Label("INFORMATION OF CARD HOLDER");
 
     public MoreCardInfoPane(CreditCard creditCard) {
-        listName.setFont(new Font("Arial", 20));
+
         nameList.getItems().addAll("Serial", "CCV", "Name", "Surname", "Issue Date", "Expiry Date", "Type", "Tier", "Money Boundary", "State");
-        nameList.setMaxWidth(150);
-        valueList.setMaxWidth(150);
+        nameList.setPrefSize(250, 500);
+        nameList.getStyleClass().add("info-list-cell");
+        valueList.setPrefSize(250, 500);
+        valueList.getStyleClass().add("info-list-cell");
+        listName.setStyle("-fx-font-size : 22px; -fx-text-fill : white;");
         this.creditCard = creditCard;
         valueList.getItems().addAll(//must invoke once
                 creditCard.getSerial(),
@@ -42,7 +54,7 @@ public class MoreCardInfoPane extends Pane{
                 creditCard.getState()
         );
         //valueList.setEditable(true);
-        
+
     }
 
     public void setCreditCard(CreditCard creditCard) {
@@ -64,6 +76,8 @@ public class MoreCardInfoPane extends Pane{
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(5));
         vBox.getChildren().addAll(listName, hBox);
+        vBox.setAlignment(Pos.CENTER);
+
 
         getChildren().clear();
         getChildren().add(vBox);
@@ -80,5 +94,5 @@ public class MoreCardInfoPane extends Pane{
         super.setHeight(height);
         paintMoreCardInfo();
     }
-    
+
 }
